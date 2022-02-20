@@ -1,0 +1,28 @@
+<div class="table-container">
+    <div class="table" [ngStyle]="tableHeight">
+     <ng-container *ngFor="let tp of templates">
+       <ng-container [ngSwitch]="tp.templateName">
+        <ng-container *ngSwitchCase="TEMPLATE.header">
+            <div class="table-column">
+                <div class="column">No.</div>
+                <ng-container *ngTemplateOutlet ="tp.template; context: {$implicit: cols}"></ng-container>
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="TEMPLATE.body">
+            <div class="table-row" *ngFor="let item of items; index as i">
+                <div class="row">{{i + 1 + pageData.start}}</div>
+                <ng-container *ngTemplateOutlet ="tp.template; context: {$implicit: {rawData: item, index: i, columns:cols}}"></ng-container>
+            </div>
+        </ng-container>
+        <div *ngSwitchDefault>Please provide correct name for template.</div>
+       </ng-container>
+     </ng-container>
+    </div>
+    <div class="actions">
+        <div class="current">
+            {{pageData.start + 1}} <span class="separator">-</span>{{pageData.end}} of {{size}}
+        </div>
+        <button (click)="prev()"><</button>
+        <button (click)="next()">></button>
+    </div>
+</div>
